@@ -1,4 +1,3 @@
-#a delivery service does not accept packages heavier than 27 kg. Write a program that asks the user the weight of a package and then says whether or not he can be delivered by this company.
 
 weight = int(input("gimmie yo weight in kg\n"))
 length = int(input("gimmie yo length in cm\n"))

@@ -1,8 +1,8 @@
-<h1>Handbook on Programming in ?????</h1>
+<h1>Handbook on Programming in Python</h1>
 
 **AP Computer Science Principles 2023-2024**
 
-FirstName LastName
+Andrew Rynes
 
 <!-- This is a comment (which will not be displayed in the live file);
 replace all "???" with your own text. -->
