@@ -3,6 +3,9 @@ import string
 import os
 import rsa
 
+#public key to encrypt the password
+#private key to decrypt the password
+
 # Read the RSA key from a text file, catch the error if the file is not found
 with open("key.txt", "r") as key_file:
     rsa_key = key_file.read()
