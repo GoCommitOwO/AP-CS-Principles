@@ -1,7 +1,8 @@
-import getpass
 import string
 import os
 import rsa
+import pickle as pkl
+import pwinput
 
 #public key to encrypt the password
 #private key to decrypt the password
@@ -22,9 +23,12 @@ except FileNotFoundError:
     choice = input("Choice: ")
     if choice == '1':
         #generate the keys
-        pubkey, privkey = rsa.newkeys(512)
+        pubkey, privkey = rsa.newkeys(2048)
 
         #write the keys to the file
+        #check if the folder exists, if not, create it
+        if not os.path.exists('keys'):
+            os.makedirs('keys')
         with open ('keys/privkey.pem', 'wb') as f:
             f.write(privkey.save_pkcs1('PEM'))
         with open ('keys/pubkey.pem', 'wb') as f:
@@ -43,7 +47,7 @@ except FileNotFoundError:
 #import a "datasheet" dictionary variable from logins.txt, or create a new one if the file is not found
 try:
     with open('logins.txt', 'rb') as f:
-        datasheet = eval(f.read())
+        datasheet = pkl.load(f)
         print("Logins.txt file loaded!.")
 except FileNotFoundError:
     datasheet = {}
@@ -55,19 +59,20 @@ def add_password(account, password):
     if account in datasheet:
         print(f"Account '{account}' already exists.")
         return
-    #encrypt the password
-    password = rsa.encrypt(password.encode(), pubkey)
-    #write the encrypted password to the file
+    # encrypt the password
+    encrypted_password = rsa.encrypt(password.encode(), pubkey)
+    datasheet[account] = encrypted_password
     with open('logins.txt', 'wb') as f:
-        f.write(str(datasheet).encode())
-
+        pkl.dump(datasheet, f)
 
 def get_password(account):
     account = string.capwords(account)
     if account in datasheet:
-        return rsa.decrypt(datasheet[account], privkey).decode()
+        decrypted_password = rsa.decrypt(datasheet[account], privkey)
+        return decrypted_password.decode()
     else:
         return False
+
 
 def list_accounts():
     if not datasheet:
@@ -84,11 +89,13 @@ while True:
     print("1. Add an account")
     print("2. Get a password")
     print("3. List accounts")
-    print("4. Quit")
+    print("4. Delete an account")
+    print("5. Log in")
+    print("6. Quit")
     print("----------------------------")
     print('\n')
 
-    choice = input("Select an option (1/2/3/4): ")
+    choice = input("Select an option (1/2/3/4/5/6): ")
 
     if choice == '1':
         #clear screen and write header
@@ -99,7 +106,7 @@ while True:
         print("----------------------------\n\n")
 
         account = input("Enter account name: ")
-        password = input("Enter the password: ")
+        password = pwinput.pwinput(prompt="Enter password: ", mask='ඞ')
         add_password(account, password)
 
     elif choice == '2':
@@ -126,7 +133,47 @@ while True:
 
         list_accounts()
     elif choice == '4':
-        break
+        # clear screen and write header
+        os.system('cls')
+
+        print("----------------------------")
+        print("Deleting an Account")
+        print("----------------------------\n\n")
+
+        account = string.capwords(input("Enter account name: "))
+        if account in datasheet:
+            del datasheet[account]
+            with open('logins.txt', 'wb') as f:
+                pkl.dump(datasheet, f)
+            print(f"Account '{account}' deleted.")
+        else:
+            print(f"Account '{account}' not found.")
+
+    elif choice == '5':
+        # try login
+        os.system('cls')
+
+        print("----------------------------")
+        print("Login")
+        print("----------------------------\n\n")
+        while True:
+            username = string.capwords((input("Enter username: ")))
+            #check if username exists
+            if username in datasheet:
+                #get password
+                password = get_password(username)
+                #get password input
+                input_password = pwinput.pwinput(prompt="Enter password: ", mask='ඞ')
+                #check if password is correct
+                if input_password == password:
+                    print("Login successful! Welcome back, " + username + "!")
+                    break
+                else:
+                    print("Incorrect password. Please try again.")
+            else:
+                print("Username not found. Please try again.")
+    elif choice == '6':
+        exit()
     else:
         print("Invalid option. Please select a valid option (1/2/3/4).")
 
