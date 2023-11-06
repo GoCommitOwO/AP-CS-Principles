@@ -16,8 +16,8 @@ def main():
     os.chdir('..')  # <----- this took so long to figure out
     with open("Langdat/prog505a.txt", "r") as file:
         for line in file:
-            # Get the first 13 characters of the line, which is the name
-            name = line[0:12]
+           #the characters up until a second space is the name
+            name = line[:line.find(" ", line.find(" ") + 1)]
 
             # The last character is the number of books read
             books_read = int(line[-2])
@@ -34,7 +34,7 @@ def main():
                 winner_points = points
 
             # Print the reader's information.
-            print(f"{name}{books_read}{points}")
+            print(f"{name}, {books_read}, {points}")
 
     # Calculate the average points per reader.
     average_points = total_points / 5
