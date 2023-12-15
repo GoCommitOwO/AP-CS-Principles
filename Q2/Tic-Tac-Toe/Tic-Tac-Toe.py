@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox
 
 
 def click(i, j):
@@ -9,7 +9,7 @@ def click(i, j):
         board[index] = current_player
         update_button_text(buttons[index])
 
-        if check_winner == True:
+        if check_winner():
             show_winner_message()
             reset_game()
         elif "" not in board:
@@ -20,7 +20,7 @@ def click(i, j):
 
 
 def update_button_text(button):
-    button.config(text=current_player, state=tk.DISABLED, disabledforeground=get_player_color()) #disabled foreground came from mr gpt-3.5
+    button.config(text=current_player, state=tk.DISABLED, disabledforeground=get_player_color())
 
 
 def switch_player():
@@ -33,7 +33,7 @@ def get_player_color():
 
 
 def check_winner():
-    # check rows (i*3, i*3+1...), columns (i, i+3...), and diagonals (0,4...) for a win
+    # Check rows, columns, and diagonals for a win
     for i in range(3):
         if (board[i * 3] == board[i * 3 + 1] == board[i * 3 + 2] == current_player or
                 board[i] == board[i + 3] == board[i + 6] == current_player):
@@ -58,31 +58,19 @@ def reset_game():
         buttons[i].config(text="", state=tk.NORMAL)
 
 
-
-
-if __name__ == "__main__": # <---- cheat-gpt bc i forgor how to do this
-
-    # make a pop-up window to select player
-    #choose_starting_player()
-    # boom did it
-
-    # LMAO NOPE i lied, it didn't work
-    # bog standard it is
+if __name__ == "__main__":
     current_player = "X"
-
     board = [""] * 9
 
-    root = tk.Tk() # <--- cheat gpt
-    root.title("Tic-Tac-Toe") # <--- not cheat gpt
+    root = tk.Tk() # this line is from chatgpt
+    root.title("Tic-Tac-Toe")
 
     buttons = []
 
     for i in range(3):
         for j in range(3):
             button = tk.Button(root, text="", font=('Helvetica', 24), width=3, height=1,
-                               command=lambda i=i, j=j: click(i, j))
-                        # root and command=lambda came from chatgpt
-
+                               command=lambda row=i, col=j: click(i, j))
             button.grid(row=i, column=j)
             buttons.append(button)
 
