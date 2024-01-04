@@ -33,21 +33,14 @@ def get_player_color():
 
 
 def check_winner():
-    # Check rows for a win
+    # Check rows, columns, and diagonals for a win
     for i in range(3):
-        if all(board[i * 3 + j] == current_player for j in range(3)):
+        if (board[i * 3] == board[i * 3 + 1] == board[i * 3 + 2] == current_player or
+                board[i] == board[i + 3] == board[i + 6] == current_player):
             return True
-
-    # Check columns for a win
-    for i in range(3):
-        if all(board[i + j * 3] == current_player for j in range(3)):
-            return True
-
-    # Check diagonals for a win
-    if all(board[i] == current_player for i in range(0, 9, 4)) or all(
-            board[i] == current_player for i in range(2, 7, 2)):
+    if (board[0] == board[4] == board[8] == current_player or
+            board[2] == board[4] == board[6] == current_player):
         return True
-
     return False
 
 
@@ -77,7 +70,7 @@ if __name__ == "__main__":
     for i in range(3):
         for j in range(3):
             button = tk.Button(root, text="", font=('Helvetica', 24), width=3, height=1,
-                               command=lambda i=i, j=j: click(i, j))
+                               command=lambda row=i, col=j: click(i, j))
             button.grid(row=i, column=j)
             buttons.append(button)
 
