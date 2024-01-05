@@ -4,7 +4,9 @@ from SortLibrary import *
 from Helper import *
 
 # Function to print a list of ScoreRecord objects
+
 def print_sorted_data(data, label):
+    data.reverse()
     print(f"{label} sorted:")
     stringtoprint = ""
     for record in data:
@@ -17,10 +19,11 @@ def benchmark_sorting(data, sort_function, label):
     sort_function(data)
     end_time = time.perf_counter()
     duration = end_time - start_time
-    print(f"\n{label} sort duration: {duration:.6f} seconds")
+    return duration
 
-# Read data from prg408a.dat
-with open("C:\\Users\\rynes.a\\PycharmProjects\\AP-CS-Principles\\Langdat\\prg408a.txt", "r") as file:
+
+# Read data from data.dat
+with open("Data/data.dat", "r") as file:
     lines = file.readlines()
 
 # Create a list of ScoreRecord objects
@@ -39,25 +42,46 @@ insertion_sort_data = score_records[:]
 python_sort_data = score_records[:]
 
 
-# Reverse the sorted lists
-bubble_sort_data.reverse()
+# benchmark the sorted data
+bubble_time = benchmark_sorting(bubble_sort_data, bubbleSort, "Bubble")
+selection_time = benchmark_sorting(selection_sort_data, selectionSort, "Selection")
+insertion_time = benchmark_sorting(insertion_sort_data, insertionSort, "Insertion")
+python_time = benchmark_sorting(python_sort_data, pythonSort, "Python")
 
+# add the times to a list and find the fastest and slowest
+times = [bubble_time, selection_time, insertion_time, python_time]
+fastestTime = min(times)
+slowestTime = max(times)
 
-# sort data and then get time
+#get the index of the sort
+fastestIndex = times.index(fastestTime)
+slowestIndex = times.index(slowestTime)
+
+# get the name of the sort
+fastestSortName = ["Bubble", "Selection", "Insertion", "Python"][fastestIndex]
+slowestSortName = ["Bubble", "Selection", "Insertion", "Python"][slowestIndex]
+
 
 # bubble
-benchmark_sorting(bubble_sort_data, bubbleSort, "Bubble")
+print_sort_time("Bubble", bubble_time)
 print_sorted_data(bubble_sort_data, "Bubble")
 
-
 # selection
-benchmark_sorting(selection_sort_data, selectionSort, "Selection")
+print_sort_time("Selection", selection_time)
 print_sorted_data(selection_sort_data, "Selection")
 
 # insertion
-benchmark_sorting(insertion_sort_data, insertionSort, "Insertion")
+print_sort_time("Insertion", insertion_time)
 print_sorted_data(insertion_sort_data, "Insertion")
 
 # python default
-benchmark_sorting(python_sort_data, pythonSort, "Python")
+print_sort_time("Python", python_time)
 print_sorted_data(python_sort_data, "Python")
+
+# fastest sort
+print(f"\n\nFastest sort: {fastestSortName} sort")
+print(f"{fastestSortName} time: {fastestTime:.7f} seconds")
+
+# slowest sort
+print(f"\n\nSlowest sort: {slowestSortName} sort")
+print(f"{slowestSortName} time: {slowestTime:.7f} seconds")

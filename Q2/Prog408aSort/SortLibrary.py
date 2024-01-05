@@ -27,3 +27,6 @@ def insertionSort(list):
 
 def pythonSort(list):
     list.sort()
+
+def print_sort_time(sort_name, time):
+    print(f"\n{sort_name} sort time: {time:.7f} seconds")
