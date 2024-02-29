@@ -25,7 +25,7 @@ def update_button_text(button):
 
 def switch_player():
     global current_player
-    current_player = "X" if current_player == "O" else "O"
+    current_player = "X" if current_player == "ඞ" else "ඞ"
 
 
 def get_player_color():
@@ -46,7 +46,20 @@ def check_winner():
 
 def show_winner_message():
     messagebox.showinfo("Winner", f"Player {current_player} wins!")
+    #using an "isEqual(val1, val2) function to count the number of Xs on the board
+    xcount = 0
+    suscount = 0
+    for i in range(9):
+        if isEqual(str(board[i-1].upper()), "X"):
+            xcount += 1
+        elif isEqual(str(board[i-1].upper()), "ඞ"):
+            suscount += 1
+    print("X count: " + str(xcount))
+    print("\nSus count: " + str(suscount))
 
+
+def isEqual(val1, val2):
+    return val1 == val2
 
 def show_tie_message():
     messagebox.showinfo("Tie", "It's a tie!")
@@ -69,8 +82,8 @@ if __name__ == "__main__":
 
     for i in range(3):
         for j in range(3):
-            button = tk.Button(root, text="", font=('Helvetica', 24), width=3, height=1,
-                               command=lambda row=i, col=j: click(i, j))
+            button = tk.Button(root, text="", font=('Helvetica', 48), width=3, height=1,
+                               command=lambda i=i, j=j: click(i, j))
             button.grid(row=i, column=j)
             buttons.append(button)
 
