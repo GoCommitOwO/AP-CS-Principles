@@ -2,6 +2,10 @@ import pandas as pd
 from tabulate import tabulate
 import random
 
+
+#sort that data!!!
+
+
 class AttendanceTracker:
     def __init__(self):
         self.attendance_data = pd.DataFrame(columns=['Name', 'Days Attended', 'Total Days Missed', 'Excused Absences', 'Unexcused Absences'])
@@ -39,8 +43,8 @@ class AttendanceTracker:
 
         return overall_percentage, most_absent_student, most_truant_student
 
-# Names array for random student names
-names = ["Alice", "Bob", "Charlie", "David", "Eva", "Frank", "Grace", "Harry", "Ivy", "Jack"]
+# Expanded list of random student names
+names = ["Alice", "Bob", "Charlie", "David", "Ezra", "Frank", "Grace", "Harry", "Ivy", "Jack", "Katherine", "Leo", "Mia", "Noah", "Olivia", "Peter", "Quinn", "Riley", "Sophia", "Thomas", "Uma (not Thurman)", "Vincent", "Willow", "Xander", "Yara", "Z. Scott Loving"]
 
 # Create an AttendanceTracker instance
 attendance_tracker = AttendanceTracker()
@@ -65,12 +69,12 @@ else:
 generate_random_data = input("Do you want to generate random data? (yes/no): ").lower()
 
 if generate_random_data == 'yes':
-
-
-    try:
-        numdays = int(input("Enter the number of days to simulate"))
-    except ValueError:
-        print("Please enter a number")
+    while True:
+        try:
+            num_days = int(input("Enter the number of days to simulate: "))
+            break  # Break out of the loop if the input is a valid integer
+        except ValueError:
+            print("Please enter a valid number.")
 
     # Loop through the range of random days
     for day in range(1, num_days + 1):
@@ -78,19 +82,23 @@ if generate_random_data == 'yes':
 
         # Mark random attendance for each student
         for i in range(num_students):
-            is_present = random.choice([True, False])
+            is_present = random.choices([True, False], weights=[0.95, 0.05])[0]  # 95% chance of being present
 
             # Ask for excused absence only if the student is absent
             is_excused = False
             if not is_present:
-                is_excused = random.choice([True, False])
+                is_excused = random.choices([True, False], weights=[0.75, 0.25])[0]  # 75% chance of being excused
 
             # Mark attendance
             attendance_tracker.mark_attendance(i, is_present, is_excused)
 
 else:
-    # Get the number of days
-    num_days = int(input("Enter the number of days: "))
+    while True:
+        try:
+            num_days = int(input("Enter the number of days: "))
+            break  # Break out of the loop if the input is a valid integer
+        except ValueError:
+            print("Please enter a valid number.")
 
     # Loop through the range of days
     for day in range(1, num_days + 1):
