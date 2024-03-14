@@ -73,11 +73,13 @@ if generate_random_data == 'yes':
 
     for day in range(1, num_days + 1):
         for i in range(num_students):
-            is_present = random.choices([True, False], weights=[average_percent_attended / 100, (100 - average_percent_attended) / 100])[0]
+            is_present = random.choices([True, False], weights=[average_percent_attended / 100,
+                                                                (100 - average_percent_attended) / 100])[0]
 
             is_excused = False
             if not is_present:
-                is_excused = random.choices([True, False], weights=[excused_absence_frequency, 1 - excused_absence_frequency])[0]
+                is_excused = random.choices([True, False], weights=[excused_absence_frequency,
+                                                                    1 - excused_absence_frequency])[0]
 
             attendance_tracker.mark_attendance(i, is_present, is_excused)
 
