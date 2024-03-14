@@ -5,7 +5,8 @@ import random
 
 class AttendanceTracker:
     def __init__(self):
-        self.attendance_data = pd.DataFrame(columns=['Name', 'Days Attended', 'Total Days Missed', 'Excused Absences', 'Unexcused Absences'])
+        self.attendance_data = pd.DataFrame(columns=['Name', 'Days Attended', 'Total Days Missed',
+                                                     'Excused Absences', 'Unexcused Absences'])
 
     def add_student(self, name):
         new_student = pd.DataFrame({'Name': [name], 'Days Attended': [0], 'Total Days Missed': [0],
