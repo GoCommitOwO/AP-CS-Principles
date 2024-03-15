@@ -55,8 +55,13 @@ generate_names = input("Do you want to generate names automatically? (yes/no): "
 names = ["Alice", "Bob", "Charlie", "David", "Ezra", "Frank", "Grace", "Harry", "Ivy", "Jack", "Katherine", "Leo", "Mia", "Noah", "Olivia", "Peter", "Quinn", "Riley", "Sophia", "Thomas", "Uma (not Thurman)", "Vincent", "Willow", "Xander", "Yara", "Zcott"]
 
 if generate_names == 'yes':
+    if num_students > 25:
+        print("The number of students is too large for automatic name generation. "
+              "Please restart the program and try again.")
+        exit()
     for i in range(num_students):
         student_name = random.choice(names)
+        names.remove(student_name)
         attendance_tracker.add_student(student_name)
 else:
     for i in range(num_students):
@@ -73,8 +78,8 @@ if generate_random_data == 'yes':
         except ValueError:
             print("Please enter a valid number.")
 
-    average_percent_attended = float(input("Enter the average percent of classes attended (e.g., 80 for 80%): "))
-    excused_absence_frequency = float(input("Enter the frequency of excused absences (e.g., 25 for 25%): "))
+    average_percent_attended = float(input("Enter the average percent of classes attended (e.g. 90 for 90%): "))
+    excused_absence_frequency = float(input("Enter the frequency of excused absences: "))
 
     for day in range(1, num_days + 1):
         for i in range(num_students):
@@ -124,5 +129,3 @@ if most_truant_student:
     print(f"Most Truant Student(s): {', '.join(most_truant_student)}")
 else:
     print("No students were truant.")
-
-
