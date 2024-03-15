@@ -27,6 +27,7 @@ class AttendanceTracker:
             print(f"Invalid index {index}.")
 
     def display_attendance(self):
+        self.attendance_data = self.attendance_data.sort_values(by='Days Attended', ascending=False).reset_index(drop=True)
         print(tabulate(self.attendance_data, headers='keys', tablefmt='pretty', showindex=False))
 
     def class_statistics(self):
@@ -39,7 +40,10 @@ class AttendanceTracker:
         most_truant_student = self.attendance_data.loc[
             self.attendance_data['Unexcused Absences'] == self.attendance_data['Unexcused Absences'].max(), 'Name'].tolist()
 
-        return overall_percentage, most_absent_student, most_truant_student
+        most_present_student = self.attendance_data.loc[
+            self.attendance_data['Days Attended'] == self.attendance_data['Days Attended'].max(), 'Name'].tolist()
+
+        return overall_percentage, most_absent_student, most_truant_student, most_present_student
 
 
 attendance_tracker = AttendanceTracker()
@@ -48,7 +52,7 @@ num_students = int(input("Enter the number of students: "))
 
 generate_names = input("Do you want to generate names automatically? (yes/no): ").lower()
 
-names = ["Alice", "Bob", "Charlie", "David", "Ezra", "Frank", "Grace", "Harry", "Ivy", "Jack", "Katherine", "Leo", "Mia", "Noah", "Olivia", "Peter", "Quinn", "Riley", "Sophia", "Thomas", "Uma (not Thurman)", "Vincent", "Willow", "Xander", "Yara", "ZScott"]
+names = ["Alice", "Bob", "Charlie", "David", "Ezra", "Frank", "Grace", "Harry", "Ivy", "Jack", "Katherine", "Leo", "Mia", "Noah", "Olivia", "Peter", "Quinn", "Riley", "Sophia", "Thomas", "Uma (not Thurman)", "Vincent", "Willow", "Xander", "Yara", "Zcott"]
 
 if generate_names == 'yes':
     for i in range(num_students):
@@ -70,7 +74,7 @@ if generate_random_data == 'yes':
             print("Please enter a valid number.")
 
     average_percent_attended = float(input("Enter the average percent of classes attended (e.g., 80 for 80%): "))
-    excused_absence_frequency = float(input("Enter the frequency of excused absences (e.g., 0.25 for 25%): "))
+    excused_absence_frequency = float(input("Enter the frequency of excused absences (e.g., 25 for 25%): "))
 
     for day in range(1, num_days + 1):
         for i in range(num_students):
@@ -79,8 +83,8 @@ if generate_random_data == 'yes':
 
             is_excused = False
             if not is_present:
-                is_excused = random.choices([True, False], weights=[excused_absence_frequency,
-                                                                    1 - excused_absence_frequency])[0]
+                is_excused = random.choices([True, False], weights=[excused_absence_frequency / 100,
+                                                                (100 - excused_absence_frequency) / 100])[0]
 
             attendance_tracker.mark_attendance(i, is_present, is_excused)
 
@@ -105,8 +109,11 @@ else:
 print("\nFinal Attendance:")
 attendance_tracker.display_attendance()
 
-percentage, most_absent_student, most_truant_student = attendance_tracker.class_statistics()
+percentage, most_absent_student, most_truant_student, most_present_student = attendance_tracker.class_statistics()
 print(f"\nOverall Percentage of Classes Attended: {percentage:.2f}%")
+
+if most_present_student:
+    print(f"Most Present Student(s): {', '.join(most_present_student)}")
 
 if most_absent_student:
     print(f"Most Absent Student(s): {', '.join(most_absent_student)}")
@@ -117,3 +124,5 @@ if most_truant_student:
     print(f"Most Truant Student(s): {', '.join(most_truant_student)}")
 else:
     print("No students were truant.")
+
+
