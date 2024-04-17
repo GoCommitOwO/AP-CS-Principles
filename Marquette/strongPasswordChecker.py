@@ -1,52 +1,54 @@
-def strong_password_checker(password):
+def strongPasswordChecker(s):
     # Initialize requirements
     has_digit = False
     has_lower = False
     has_upper = False
-    
+
     # Check if password meets requirements
-    for char in password:
+    for char in s:
         if char.isdigit():
             has_digit = True
         elif char.islower():
             has_lower = True
         elif char.isupper():
             has_upper = True
-    
+
     # Calculate steps needed to make the password strong
-    num_steps = 0
+    steps = 0
     if not has_digit:
-        num_steps += 1
-        password += '1'  # Add a digit
+        steps += 1
+        s += '1'
     if not has_lower:
-        num_steps += 1
-        password += 'a'  # Add a lowercase letter
+        steps += 1
+        s += 'a'
     if not has_upper:
-        num_steps += 1
-        password += 'A'  # Add an uppercase letter
-    
-    length = len(password)
+        steps += 1
+        s += "A"
+
+    length = len(s)
     if length < 6:
-        num_steps += 6 - length  # Add additional characters to meet minimum length
-    
+        steps += max(6 - length, 1)
+    elif length > 20:
+        steps += length - 20
+
     # Check for consecutive characters
     consecutive = 0
     for i in range(1, length):
-        if password[i] == password[i - 1]:
+        if s[i] == s[i - 1]:
             consecutive += 1
             if consecutive == 2:
-                num_steps += 1
+                steps += 1
                 consecutive = 0
+                break
         else:
             consecutive = 0
-    
-    # Sanity check
-    if len(set(password)) < len(password):
-        num_steps += 1
-    
-    return num_steps
+    return (steps)
 
-# Test the function
-password = "a"
-steps_needed = strong_password_checker(password)
-print("Steps needed to make the password secure:", steps_needed)
+
+def main():
+    password = input()
+    result = strongPasswordChecker(password)
+    print(result)
+
+if __name__ == "__main__":
+    main()
