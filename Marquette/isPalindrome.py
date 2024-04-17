@@ -16,12 +16,13 @@ False: if the input string is not a palindrome
 """
 
 def isPalindrome(s):
-    s = s.strip()
+    s = s.replace(" ", "")
     s = s.lower()
+
     if s == s[::-1]:
-        return True
+        return "True"
     else:
-        return False
+        return "False"
 
 # It is unnecessary to edit the "main" function of each problem's provided code skeleton.
 # The main function is written for you in order to help you conform to input and output formatting requirements.

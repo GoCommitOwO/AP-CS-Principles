@@ -14,22 +14,29 @@ def strongPasswordChecker(s):
             has_upper = True
 
     # Calculate steps needed to make the password strong
-    steps = 0
+    steps = -1
     if not has_digit:
         steps += 1
         s += '1'
     if not has_lower:
         steps += 1
         s += 'a'
+
     if not has_upper:
         steps += 1
         s += "A"
 
     length = len(s)
-    if length < 6:
-        steps += max(6 - length, 1)
-    elif length > 20:
-        steps += length - 20
+
+    while length < 6 or length > 20:
+        if length < 6:
+            steps += 1
+            s += 'a'
+            length = len(s)
+        elif length > 20:
+            del s[0]
+            length = len(s)
+
 
     # Check for consecutive characters
     consecutive = 0

@@ -11,10 +11,14 @@ def lengthOfLongestSubstring(s):
 
     return maxLength
 
+#It is not necessary for you to change the main.
+#The main was provided to make sure it conforms
+#to the input and output requirenmetns.
+
 def main():
-    input_str = input("Enter a string: ")
+    input_str = input()
     answer = lengthOfLongestSubstring(input_str)
-    print("Length of longest substring without repeating characters:", answer)
+    print(answer)
 
 if __name__ == "__main__":
     main()
