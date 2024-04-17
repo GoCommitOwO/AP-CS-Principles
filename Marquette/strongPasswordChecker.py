@@ -39,9 +39,10 @@ def strong_password_checker(password):
         else:
             consecutive = 0
     
-    return steps
+    # Return the maximum of steps needed and length
+    return max(steps, 6 - length)
 
 # Test the function
-password = "Abcdef1"
+password = "b"
 steps_needed = strong_password_checker(password)
 print("Steps needed to make the password secure:", steps_needed)
