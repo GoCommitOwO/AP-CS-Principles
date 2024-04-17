@@ -36,6 +36,6 @@ def calculate_reservoir_capacity(construction_plan):
     return area
 
 # Test the function
-construction_plan = ["R 6", "D 5", "L 2", "U 3"]
+construction_plan = ["R 6", "D 5", "L 2", "U 3 "]
 reservoir_capacity = calculate_reservoir_capacity(construction_plan)
 print("Reservoir capacity:", reservoir_capacity, "square meters")
